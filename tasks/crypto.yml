@@ -2,44 +2,45 @@
 - name: Set RSA and ED25519 hostkeys
   set_fact:
     sshd_host_key_files: ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_ed25519_key']
-  when: sshd_version.stdout is version('6.3', '>=') and not sshd_host_key_files
+  when: sshd_version.stdout|int is version('6.3', '>=') and not sshd_host_key_files
 
 - name: Set only RSA hostkey
   set_fact:
     sshd_host_key_files: ['/etc/ssh/ssh_host_rsa_key']
-  when: sshd_version.stdout is version('5.3', '>=') and not sshd_host_key_files
+  when: sshd_version.stdout|int is version('5.3', '>=') and not sshd_host_key_files
 
 - name: Set MACs for openssh >= 6.6
   set_fact:
     sshd_macs: '{{ sshd_macs_66_default }}'
-  when: sshd_version.stdout is version('6.6', '>=') and not sshd_macs
+  when: sshd_version.stdout|int is version('6.6', '>=') and not sshd_macs
 
 - name: Set MACs for openssh >= 5.9
   set_fact:
     sshd_macs: '{{ sshd_macs_59_default }}'
-  when: sshd_version.stdout is version('5.9', '>=') and not sshd_macs
+  when: sshd_version.stdout|int is version('5.9', '>=') and not sshd_macs
 
 - name: Set MACs for openssh >= 5.3
   set_fact:
     sshd_macs: '{{ sshd_macs_53_default }}'
-  when: sshd_version.stdout is version('5.3', '>=') and not sshd_macs
+  when: sshd_version.stdout|int is version('5.3', '>=') and not sshd_macs
 
 - name: Set ciphers for openssh >= 6.6
   set_fact:
     sshd_ciphers: '{{ sshd_ciphers_66_default }}'
-  when: sshd_version.stdout is version('6.6', '>=') and not sshd_ciphers
+  when: sshd_version.stdout|int is version('6.6', '>=') and not sshd_ciphers
 
 - name: Set ciphers for openssh >= 5.3
   set_fact:
     sshd_ciphers: '{{ sshd_ciphers_53_default }}'
-  when: sshd_version.stdout is version('5.3', '>=') and not sshd_ciphers
+  when: sshd_version.stdout|int is version('5.3', '>=') and not sshd_ciphers
 
 - name: Set kex for openssh >= 6.6
   set_fact:
     sshd_kex: '{{ sshd_kex_66_default }}'
-  when: sshd_version.stdout is version('6.6', '>=') and not sshd_kex
+  when: sshd_version.stdout|int is version('6.6', '>=') and not sshd_kex
 
 - name: Set kex for openssh >= 5.9
   set_fact:
     sshd_kex: '{{ sshd_kex_59_default }}'
-  when: sshd_version.stdout is version('5.9', '>=') and not sshd_kex
+  when: sshd_version.stdout|int is version('5.9', '>=') and not sshd_kex
+...
