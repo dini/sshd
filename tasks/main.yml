@@ -7,6 +7,12 @@
     - '{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml'
     - '{{ ansible_os_family }}.yml'
 
+- name: Install python-apt
+  apt:
+    name: python-apt
+    state: latest
+  when: ansible_distribution == 'Debian'
+
 - name: Installing package
   package:
     name: openssh-server
