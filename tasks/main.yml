@@ -24,6 +24,24 @@
 - name: Include crypto
   include_tasks: crypto.yml
 
+- name: Generate ed25519 hostkey
+  openssh_keypair:
+    path: /etc/ssh/ssh_host_ed25519_key
+    type: ed25519
+  when: sshd_version.stdout is version('6.3', '>=')
+
+- name: Generate RSA hostkey
+  openssh_keypair:
+    path: /etc/ssh/ssh_host_rsa_key
+  when: sshd_version.stdout is version('5.3', '>=')
+
+- name: Create /run/sshd
+  file:
+    path: /run/sshd
+    state: directory
+    mode: 0755
+  when: ansible_os_family == "Debian"
+
 - name: Template sshd_config
   template:
     src: "{{ item.file }}.j2"

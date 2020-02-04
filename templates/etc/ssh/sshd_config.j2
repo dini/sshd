@@ -34,7 +34,10 @@ GSSAPICleanupCredentials no
 UsePAM yes
 
 X11Forwarding yes
+
+{% if sshd_version.stdout is version('7.5', '<') %}
 UsePrivilegeSeparation {{ 'sandbox' if sshd_version.stdout is version('5.9', '>=') else 'yes' }}
+{% endif %}
 
 {% for item in sshd_permit_env -%}
 AcceptEnv {{ item }}
