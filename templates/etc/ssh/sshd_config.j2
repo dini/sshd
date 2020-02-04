@@ -35,7 +35,7 @@ UsePAM yes
 
 X11Forwarding yes
 
-{% if sshd_version.stdout is version('7.5', operato='lt', strict=true) %}
+{% if sshd_version.stdout is version('7.5', '<') %}
 UsePrivilegeSeparation {{ 'sandbox' if sshd_version.stdout is version('5.9', operator='ge', strict=true) else 'yes' }}
 {% endif %}
 
