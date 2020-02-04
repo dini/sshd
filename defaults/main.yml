@@ -1,6 +1,6 @@
 ---
 sshd_permit_root_login: 'no'
-sshd_2fa_enable: False
+sshd_2fa_enable: false
 
 sshd_permit_env:
   - LANG
@@ -64,3 +64,4 @@ sshd_kex_59_default:
 sshd_kex_66_default:
   - curve25519-sha256@libssh.org
   - diffie-hellman-group-exchange-sha256
+...
