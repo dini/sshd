@@ -19,6 +19,7 @@
   changed_when: false
   register: sshd_version
   check_mode: no
+  failed_when: sshd_version.rc > 1
 
 - name: Include crypto
   include_tasks: crypto.yml
