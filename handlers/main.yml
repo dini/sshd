@@ -1,2 +1,6 @@
 ---
+- name: reload sshd
+  service:
+    name: "{{ sshd_service_name }}"
+    state: reloaded
 ...
