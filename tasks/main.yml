@@ -66,6 +66,11 @@
   notify: reload sshd
   when: sshd_register_moduli.stdout
 
+- name: Reload daemons
+  systemd:
+    daemon_reloaded: yes
+  when: ansible_service_mgr == "systemd"
+
 - name: Start daemon
   service:
     name: "{{ sshd_service_name }}"
