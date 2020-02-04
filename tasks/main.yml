@@ -1,0 +1,36 @@
+---
+- name: Get OpenSSH version
+  shell: ssh -V 2>&1 | sed -r 's/.*_([0-9]*\.[0-9]).*/\1/g'
+  args:
+    executable: /bin/sh
+  changed_when: false
+  register: sshd_version
+  check_mode: no
+
+- name: Include crypto
+  include_tasks: crypto.yml
+
+- name: Template sshd_config
+  template:
+    src: "{{ item.file }}.j2"
+    dest: "/{{ item.file }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode|d('0644') }}"
+    validate: /usr/sbin/sshd -t -f %s
+  with_items:
+    - { file: 'etc/ssh/sshd_config' }
+  notify: reload sshd
+
+- name: Check if moduli contains weak DH parameters
+  shell: awk '$5 < {{ sshd_moduli_minimum }}' /etc/ssh/moduli
+  register: sshd_register_moduli
+  changed_when: false
+  check_mode: no
+
+- name: Remove all small primes
+  shell: awk '$5 >= {{ sshd_moduli_minimum }}' /etc/ssh/moduli > /tmp/moduli.new ;
+         [ -r /tmp/moduli.new -a -s /tmp/moduli.new ] && mv /tmp/moduli.new /etc/ssh/moduli || true
+  notify: reload sshd
+  when: sshd_register_moduli.stdout
+...

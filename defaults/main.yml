@@ -1,0 +1,66 @@
+---
+sshd_permit_root_login: 'no'
+sshd_2fa_enable: False
+
+sshd_permit_env:
+  - LANG
+  - LC_CTYPE
+  - LC_NUMERIC
+  - LC_TIME
+  - LC_COLLATE
+  - LC_MONETARY
+  - LC_MESSAGES
+  - LC_PAPER
+  - LC_NAME
+  - LC_ADDRESS
+  - LC_TELEPHONE
+  - LC_MEASUREMENT
+  - LC_IDENTIFICATION
+  - LC_ALL
+  - LANGUAGE
+  - XMODIFIERS
+  - EDITOR
+  - VISUAL
+
+sshd_moduli_minimum: 2048
+
+sshd_host_key_files: []
+sshd_macs: []
+sshd_ciphers: []
+sshd_kex: []
+
+sshd_macs_53_default:
+  - hmac-ripemd160
+  - hmac-sha1
+
+sshd_macs_59_default:
+  - hmac-sha2-512
+  - hmac-sha2-256
+  - hmac-ripemd160
+
+sshd_macs_66_default:
+  - hmac-sha2-512-etm@openssh.com
+  - hmac-sha2-256-etm@openssh.com
+  - umac-128-etm@openssh.com
+  - hmac-sha2-512
+  - hmac-sha2-256
+
+sshd_ciphers_53_default:
+  - aes256-ctr
+  - aes192-ctr
+  - aes128-ctr
+
+sshd_ciphers_66_default:
+  - chacha20-poly1305@openssh.com
+  - aes256-gcm@openssh.com
+  - aes128-gcm@openssh.com
+  - aes256-ctr
+  - aes192-ctr
+  - aes128-ctr
+
+sshd_kex_59_default:
+  - diffie-hellman-group-exchange-sha256
+
+sshd_kex_66_default:
+  - curve25519-sha256@libssh.org
+  - diffie-hellman-group-exchange-sha256

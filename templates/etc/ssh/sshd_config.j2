@@ -1,0 +1,46 @@
+# {{ ansible_managed }}
+
+AddressFamily inet
+Protocol 2
+UseDNS no
+
+LoginGraceTime 60s
+PermitRootLogin {{ sshd_permit_root_login }}
+MaxAuthTries 5
+
+{% for key in sshd_host_key_files -%}
+HostKey {{key}}
+{% endfor %}
+
+{{ "Ciphers "+sshd_ciphers| join(',') if sshd_ciphers else "Ciphers"|comment }}
+
+{{ "MACs "+sshd_macs| join(',') if sshd_macs else "MACs"|comment }}
+
+{{ "KexAlgorithms "+sshd_kex| join(',') if sshd_kex else "KexAlgorithms"|comment }}
+
+SyslogFacility AUTHPRIV
+
+AuthorizedKeysFile      .ssh/authorized_keys
+
+PubkeyAuthentication yes
+PasswordAuthentication no
+KerberosAuthentication no
+
+ChallengeResponseAuthentication {{ 'yes' if sshd_2fa_enable else 'no' }}
+
+GSSAPIAuthentication no
+GSSAPICleanupCredentials no
+
+UsePAM yes
+
+X11Forwarding yes
+UsePrivilegeSeparation {{ 'sandbox' if sshd_version.stdout is version('5.9', '>=') else 'yes' }}
+
+{% for item in sshd_permit_env -%}
+AcceptEnv {{ item }}
+{% endfor %}
+
+ClientAliveInterval 60
+ClientAliveCountMax 10
+
+Subsystem       sftp    /usr/libexec/openssh/sftp-server
